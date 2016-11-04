@@ -1,0 +1,11 @@
+{
+    "name": "pawelpyrczak/pass",
+    "type": "project",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "TKr\\": "src/"
+        }
+    }
+}

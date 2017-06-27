@@ -1,0 +1,12 @@
+{
+    "name": "pawelpyrczak/passgen",
+    "type": "project",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+          "TKr\\": "src/TKr/",
+          "TKr\\PassGen\\": "src/TKr/PassGen/"
+        }
+    }
+}

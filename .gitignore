@@ -1,0 +1,10 @@
+/vendor/
+
+# Symfony/vim working entities classes
+*.php~
+#vim swap files
+*.swp
+*.swo
+
+#OS X
+.DS_Store

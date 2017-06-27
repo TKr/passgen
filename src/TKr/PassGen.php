@@ -5,7 +5,7 @@ namespace TKr;
 class PassGen
 {
     const ALLOWED_CHARS_FLAT = '3456789ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz3456789';
-    const ALLOWED_CHARS_SPECIAL = '!?@#$%&*()<>[]{}\|3456789ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    const ALLOWED_CHARS_SPECIAL = 'abcdefghijklmnopqrstuwvyzABCDEFGHIJKLMNOPQRSTUWVYZ0123456789!@#$%&*()<>?|[]{}';
 
     private $password;
 

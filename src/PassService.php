@@ -2,7 +2,7 @@
 
 namespace TKr;
 
-use Tkr\ShannonEntropy;
+use TKr\ShannonEntropy;
 
 class PassService
 {

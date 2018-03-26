@@ -2,6 +2,8 @@
 
 namespace TKr;
 
+use Tkr\ShannonEntropy;
+
 class PassService
 {
     const BEGIN_END_LENGTH = 4;
@@ -10,8 +12,26 @@ class PassService
     const GENERATED_TOKEN_LENGTH = 48;
     const ALLOWED_BEDIN_END = 'ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz';
     const ALLOWED_CHARS = '23456789ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+    const ITERATIONS = 10;
 
-    public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH)
+    public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH, $iterations = self::ITERATIONS)
+    {
+        $bestPass = '';
+        $bestEntropy = 0;
+
+        for ($i = 0; $i < $iterations; $i++) {
+            $pass = $this->generateSecurePasswordStringOnce($length);
+            $entropy = ShannonEntropy::value($pass);
+            if ($entropy > $bestEntropy) {
+                $bestPass = $pass;
+                $bestEntropy = $entropy;
+            }
+        }
+
+        return $bestPass;
+    }
+
+    private function generateSecurePasswordStringOnce($length = self::GENERATED_PASSWORD_LENGTH)
     {
         if ($length > (self::BEGIN_END_LENGTH * 2)) {
             $beginLength = self::BEGIN_END_LENGTH;

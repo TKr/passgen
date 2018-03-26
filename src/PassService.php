@@ -6,12 +6,12 @@ use TKr\ShannonEntropy;
 
 class PassService
 {
-    const BEGIN_END_LENGTH = 4;
+    const BEGIN_END_LENGTH = 3;
     const MIN_PASSWORD_LENGTH = 8;
     const GENERATED_PASSWORD_LENGTH = 16;
     const GENERATED_TOKEN_LENGTH = 48;
     const ALLOWED_BEDIN_END = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm';
-    const ALLOWED_CHARS = '1234567890qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
+    const ALLOWED_CHARS = 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
     const ITERATIONS = 200;
 
     public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH, $iterations = self::ITERATIONS)
@@ -21,10 +21,12 @@ class PassService
 
         for ($i = 0; $i < $iterations; $i++) {
             $pass = $this->generateSecurePasswordStringOnce($length);
-            $entropy = ShannonEntropy::value($pass);
-            if ($entropy > $bestEntropy) {
-                $bestPass = $pass;
-                $bestEntropy = $entropy;
+            if (self::verify($pass)) {
+                $entropy = ShannonEntropy::value($pass);
+                if ($entropy > $bestEntropy) {
+                    $bestPass = $pass;
+                    $bestEntropy = $entropy;
+                }
             }
         }
 
@@ -72,5 +74,27 @@ class PassService
         }
         return $password;
 
+    }
+
+    public static function verify($string)
+    {
+        return self::containsNumbers($string) &&
+            self::containsLowerChars($string) &&
+            self::containsUpperChars($string);
+    }
+
+    public static function containsNumbers($string)
+    {
+        return preg_match('/[0-9]+/', $string) > 0;
+    }
+
+    public static function containsLowerChars($string)
+    {
+        return preg_match('/[a-z]+/', $string) > 0;
+    }
+
+    public static function containsUpperChars($string)
+    {
+        return preg_match('/[A-Z]+/', $string) > 0;
     }
 }

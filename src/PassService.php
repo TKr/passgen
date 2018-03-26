@@ -10,8 +10,8 @@ class PassService
     const MIN_PASSWORD_LENGTH = 8;
     const GENERATED_PASSWORD_LENGTH = 16;
     const GENERATED_TOKEN_LENGTH = 48;
-    const ALLOWED_BEDIN_END = 'ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz';
-    const ALLOWED_CHARS = '23456789ABCDEFGHJKLMNPRTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+    const ALLOWED_BEDIN_END = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm';
+    const ALLOWED_CHARS = '1234567890qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
     const ITERATIONS = 200;
 
     public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH, $iterations = self::ITERATIONS)

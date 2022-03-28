@@ -12,20 +12,24 @@ class PassService
     const GENERATED_TOKEN_LENGTH = 48;
     const ALLOWED_BEDIN_END = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm';
     const ALLOWED_CHARS = 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
+    const ALLOWED_SPECIAL = '@#$%&*+?:!';
     const ITERATIONS = 200;
 
-    public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH, $iterations = self::ITERATIONS)
+
+    public function generateSecurePasswordString($length = self::GENERATED_PASSWORD_LENGTH, $special = false, $iterations = self::ITERATIONS)
     {
         $bestPass = '';
         $bestEntropy = 0;
 
         for ($i = 0; $i < $iterations; $i++) {
-            $pass = $this->generateSecurePasswordStringOnce($length);
+            $pass = $this->generateSecurePasswordStringOnce($length, $special);
             if (self::verify($pass)) {
-                $entropy = ShannonEntropy::value($pass);
-                if ($entropy > $bestEntropy) {
-                    $bestPass = $pass;
-                    $bestEntropy = $entropy;
+                if (!$special || ($special && self::containsSpecial($pass))) {
+                    $entropy = ShannonEntropy::value(strtolower($pass));
+                    if ($entropy > $bestEntropy) {
+                        $bestPass = $pass;
+                        $bestEntropy = $entropy;
+                    }
                 }
             }
         }
@@ -33,17 +37,22 @@ class PassService
         return $bestPass;
     }
 
-    private function generateSecurePasswordStringOnce($length = self::GENERATED_PASSWORD_LENGTH)
+    private function generateSecurePasswordStringOnce($length = self::GENERATED_PASSWORD_LENGTH, $special = false)
     {
+        $dictionary = self::ALLOWED_CHARS;
+        if ($special) {
+            $dictionary .= self::ALLOWED_SPECIAL;
+        }
+
         if ($length > (self::BEGIN_END_LENGTH * 2)) {
             $beginLength = self::BEGIN_END_LENGTH;
             $endLength = self::BEGIN_END_LENGTH;
             $middle = $length - $beginLength - $endLength;
             $password = $this->generate($beginLength, self::ALLOWED_BEDIN_END);
-            $password .= $this->generate($middle, self::ALLOWED_CHARS);
+            $password .= $this->generate($middle, $dictionary);
             $password .= $this->generate($endLength, self::ALLOWED_BEDIN_END);
         } else {
-            $password = $this->generate($length, self::ALLOWED_CHARS);
+            $password = $this->generate($length, $dictionary);
         }
 
         return $password;
@@ -54,7 +63,7 @@ class PassService
         return $this->generateSecurePasswordString(self::GENERATED_TOKEN_LENGTH);
     }
 
-    private function generate($length = self::ALLOWED_BEDIN_END, $dictionary = self::ALLOWED_BEDIN_END)
+    private function generate($length = 10, $dictionary = self::ALLOWED_BEDIN_END)
     {
         $dictionary = str_shuffle($dictionary);
         /* get secure pseudo random string (all ASCII chars), php's rand function is not cryptographically secure
@@ -97,4 +106,55 @@ class PassService
     {
         return preg_match('/[A-Z]+/', $string) > 0;
     }
+
+    public static function containsSpecial($string)
+    {
+        return preg_match('/[@#$%&*+?:!]+/', $string) > 0;
+    }
+
+    public static function teorethicEntropy($string, $special = false)
+    {
+        $base = 62;
+        if ($special) {
+            $base = 72;
+        }
+        return log(pow($base, strlen($string)), 2);
+    }
+
+
+
+    /**
+     * Calculate entropy of a string
+     *
+     * @see    https://github.com/jreesuk/entropizer
+     *
+     * @param  string $str
+     * @return integer
+     */
+    public static function entropizer($str) {
+        $classes = array(
+            array("regex" => "/[a-z]/", "size" => 26),
+            array("regex" => "/[A-Z]/", "size" => 26),
+            array("regex" => "/[0-9]/", "size" => 10),
+            " ,.?!\"£$%^&*()-_=+[]{};:\'@#~<>/\\|`¬¦"
+        );
+        $size = 0;
+        $str = trim($str);
+        foreach($classes as $case) {
+            if(is_array($case)) {
+                if(preg_match($case["regex"], $str)) {
+                    $size += $case["size"];
+                }
+            } else {
+                foreach(str_split($case, 1) as $char) {
+                    if(strpos($str, $char) !== false) {
+                        $size += strlen($case);
+                        break;
+                    }
+                }
+            }
+        }
+        return floor(log($size, 2) * strlen($str));
+    }
+
 }

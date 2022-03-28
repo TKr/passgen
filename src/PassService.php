@@ -10,9 +10,9 @@ class PassService
     const MIN_PASSWORD_LENGTH = 8;
     const GENERATED_PASSWORD_LENGTH = 16;
     const GENERATED_TOKEN_LENGTH = 48;
-    const ALLOWED_BEDIN_END = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm';
-    const ALLOWED_CHARS = 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
-    const ALLOWED_SPECIAL = '@#$%&*+?:!';
+    const ALLOWED_BEDIN_END = 'QWERTYUIPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm';
+    const ALLOWED_CHARS = 'qwertyuiopasdfghjklzxcvbnm23456789QWERTYUIPASDFGHJKLZXCVBNM';
+    const ALLOWED_SPECIAL = '@#$%&*+?:!.-[]~|{}';
     const ITERATIONS = 200;
 
 

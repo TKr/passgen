@@ -16,6 +16,7 @@ $pass6 = $service->generateSecurePasswordString(16);
 $pass7 = $service->generateSecurePasswordString(18);
 $pass8 = $service->generateSecurePasswordString(20);
 $pass9 = $service->generateSecurePasswordString(22);
+$passA = $service->generateSecurePasswordString(24);
 $token = $service->generateSecureTokenString();
 
 function entropy($string, $special = false) {
@@ -31,7 +32,7 @@ function entropy($string, $special = false) {
             }
 
             input {
-                width: 12rem;
+                width: 13.1rem;
             }
 
             .worse {
@@ -59,6 +60,7 @@ function entropy($string, $special = false) {
         <span>18:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass7?>"/> Entropy: <?php echo entropy($pass7); ?></span><br/>
         <span>20:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass8?>"/> Entropy: <?php echo entropy($pass8); ?></span><br/>
         <span>22:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass9?>"/> Entropy: <?php echo entropy($pass9); ?></span><br/>
+        <span>24:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $passA?>"/> Entropy: <?php echo entropy($passA); ?></span><br/>
 <br/>
 Token: <?php echo $token; ?> , Entropy: <?php echo entropy($token); ?><br/>
 Allowed Chars Entropy: <?php echo entropy(PassService::ALLOWED_CHARS); ?>
@@ -78,6 +80,7 @@ $pass6 = $service->generateSecurePasswordString(16, true);
 $pass7 = $service->generateSecurePasswordString(18, true);
 $pass8 = $service->generateSecurePasswordString(20, true);
 $pass9 = $service->generateSecurePasswordString(22, true);
+$passA = $service->generateSecurePasswordString(24, true);
 
 
 ?>
@@ -90,6 +93,7 @@ $pass9 = $service->generateSecurePasswordString(22, true);
         <span>18:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass7?>"/> Entropy: <?php echo entropy($pass7, true); ?></span><br/>
         <span>20:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass8?>"/> Entropy: <?php echo entropy($pass8, true); ?></span><br/>
         <span>22:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $pass9?>"/> Entropy: <?php echo entropy($pass9, true); ?></span><br/>
+        <span>24:<input class="acceptable" onClick="this.select();" type="text" value="<?php echo $passA?>"/> Entropy: <?php echo entropy($passA, true); ?></span><br/>
 <br/>
 
     </body>
